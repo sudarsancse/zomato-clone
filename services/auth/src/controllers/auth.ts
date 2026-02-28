@@ -16,7 +16,7 @@ export const loginUser = TryCatch(async (req, res) => {
     });
   }
   const token = Jwt.sign({ user }, process.env.JWT_SECRET_KEY as string, {
-    expiresIn: "2m",
+    expiresIn: "30m",
   });
   res.status(200).json({ message: "Logged Sucess", token, user });
 });
@@ -47,8 +47,15 @@ export const addUserRole = TryCatch(async (req: AuthenticatedRequest, res) => {
   }
 
   const token = Jwt.sign({ user }, process.env.JWT_SECRET_KEY as string, {
-    expiresIn: "2m",
+    expiresIn: "30m",
   });
 
   res.json({ user, token });
+});
+
+// % Profile Fetch
+
+export const myProfile = TryCatch(async (req: AuthenticatedRequest, res) => {
+  const user = req.user;
+  res.json(user);
 });
