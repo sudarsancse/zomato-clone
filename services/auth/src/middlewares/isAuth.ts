@@ -19,6 +19,7 @@ export const isAuth = async (
       });
       return;
     }
+
     const token = authHeader.split(" ")[1];
     if (!token) {
       res.status(401).json({
@@ -38,6 +39,7 @@ export const isAuth = async (
       });
       return;
     }
+
     req.user = decodedValue.user;
     next();
   } catch (error) {
