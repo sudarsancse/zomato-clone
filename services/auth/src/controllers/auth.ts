@@ -2,9 +2,28 @@ import User from "../model/Use.js";
 import Jwt from "jsonwebtoken";
 import TryCatch from "../middlewares/tryCatch.js";
 import { AuthenticatedRequest } from "../middlewares/isAuth.js";
+import { oauth2client } from "../config/google.config.js";
+import axios from "axios";
 
 export const loginUser = TryCatch(async (req, res) => {
-  const { name, email, picture, number } = req.body;
+  // Google api login
+  const { code } = req.body;
+
+  if (!code) {
+    return res.status(400).json({
+      message: "Authorization code is required",
+    });
+  }
+
+  const googleRes = await oauth2client.getToken(code);
+
+  oauth2client.setCredentials(googleRes.tokens);
+  const userRes = await axios.get(
+    `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${googleRes.tokens.access_token}`,
+  );
+
+  // manual login
+  const { name, email, picture, number } = userRes.data;
 
   let user = await User.findOne({ email });
   if (!user) {
@@ -53,9 +72,11 @@ export const addUserRole = TryCatch(async (req: AuthenticatedRequest, res) => {
   res.json({ user, token });
 });
 
-// % Profile Fetch
+// $ Profile Fetch
 
 export const myProfile = TryCatch(async (req: AuthenticatedRequest, res) => {
   const user = req.user;
   res.json(user);
 });
+
+// $ Google aip signup
