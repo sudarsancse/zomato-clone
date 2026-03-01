@@ -23,14 +23,13 @@ export const loginUser = TryCatch(async (req, res) => {
   );
 
   // manual login
-  const { name, email, picture, number } = userRes.data;
+  const { name, email, picture } = userRes.data;
 
   let user = await User.findOne({ email });
   if (!user) {
     user = await User.create({
       name,
       email,
-      number,
       image: picture,
     });
   }
