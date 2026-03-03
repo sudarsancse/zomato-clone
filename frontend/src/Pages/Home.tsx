@@ -1,7 +1,9 @@
-import React from "react";
-
 function Home() {
-  return <div>Home</div>;
+  return (
+    <div>
+      <h1 className=" bg-red-600">Home</h1>
+    </div>
+  );
 }
 
 export default Home;
