@@ -6,6 +6,7 @@ import PublicRoute from "./Components/PublicRoute";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import SelectRole from "./Pages/SelectRole";
 import Navbar from "./Components/Navbar";
+import Account from "./Pages/Account";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Home />} />
             <Route path="/select-role" element={<SelectRole />} />
+            <Route path="/account" element={<Account />} />
           </Route>
         </Routes>
         <Toaster />
