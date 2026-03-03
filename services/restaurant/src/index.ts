@@ -22,7 +22,7 @@ app.get("/", (req: Request, res: Response) => {
 //! ALL ROUTERS
 
 app.listen(PORT, () => {
-  console.log(`Auth Server is running on port ${PORT}`);
+  console.log(`Restaurant Server is running on port ${PORT}`);
   // MONGODB Connection
   connectDb();
 });
