@@ -56,3 +56,18 @@ export const isAuth = async (
     });
   }
 };
+
+// Role check
+
+export const isSeller = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  const user = req.user;
+
+  if (user && user.role === "seller") {
+    res.status(401).json({ message: "Your are not an Authorized seller" });
+  }
+  return;
+};
