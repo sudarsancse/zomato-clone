@@ -4,7 +4,12 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { restaurant_Service_url } from "../main";
 import { BiMapPin, BiUpload } from "react-icons/bi";
-function AddRestaurant() {
+
+interface props {
+  fetchMyRestaurant: () => Promise<void>;
+}
+
+function AddRestaurant({ fetchMyRestaurant }: props) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [phone, setPhone] = useState("");
@@ -44,6 +49,7 @@ function AddRestaurant() {
       );
 
       toast.success("Restaurant added sucessfully");
+      fetchMyRestaurant();
     } catch (error: any) {
       toast.error(error.response.data.message);
       console.log(error);
