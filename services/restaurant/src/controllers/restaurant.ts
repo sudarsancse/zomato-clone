@@ -3,6 +3,7 @@ import getBuffer from "../config/datauri.js";
 import { AuthenticatedRequest } from "../middlewares/isAuth.js";
 import TryCatch from "../middlewares/tryCatch.js";
 import Restaurant from "../models/restaurant.js";
+import Jwt from "jsonwebtoken";
 
 export const addRestaurant = TryCatch(
   async (req: AuthenticatedRequest, res) => {
@@ -65,5 +66,40 @@ export const addRestaurant = TryCatch(
     return res.status(201).json({
       message: "Restaturant created sucessfully",
     });
+  },
+);
+
+// fecth my restaurant profile
+
+export const fetchMyRestaurant = TryCatch(
+  async (req: AuthenticatedRequest, res) => {
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Please Login",
+      });
+    }
+    const restaurant = await Restaurant.findOne({ ownerId: req.user._id });
+
+    if (!restaurant) {
+      return res.status(400).json({
+        message: "Invalide user",
+      });
+    }
+
+    if (!req.user.restaurantId) {
+      const token = Jwt.sign(
+        {
+          user: {
+            ...req.user,
+            restaurantId: restaurant._id,
+          },
+        },
+        process.env.JWT_SECRET_KEY as string,
+        { expiresIn: "15" },
+      );
+
+      return res.json({ restaurant, token });
+    }
+    res.json({ restaurant });
   },
 );
