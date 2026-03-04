@@ -62,6 +62,7 @@ export const addRestaurant = TryCatch(
         coordinates: [Number(longitude), Number(latitude)],
         formattedAddress,
       },
+      isVerified: false,
     });
     return res.status(201).json({
       message: "Restaturant created sucessfully",
@@ -82,7 +83,7 @@ export const fetchMyRestaurant = TryCatch(
 
     if (!restaurant) {
       return res.status(400).json({
-        message: "Invalide user",
+        message: "No Restaurant found..!",
       });
     }
 
@@ -95,7 +96,7 @@ export const fetchMyRestaurant = TryCatch(
           },
         },
         process.env.JWT_SECRET_KEY as string,
-        { expiresIn: "15" },
+        { expiresIn: "15d" },
       );
 
       return res.json({ restaurant, token });
