@@ -11,6 +11,6 @@ import {
 const menuRouter = express.Router();
 menuRouter.post("/new", isAuth, isSeller, uploadeFile, addMenu);
 menuRouter.get("/all/:id", isAuth, getAllItems);
-menuRouter.delete("/:id", isAuth, isSeller, deleteMenuItem);
+menuRouter.delete("/:itemId", isAuth, isSeller, deleteMenuItem);
 menuRouter.put("/status/:id", isAuth, isSeller, toggleMenuItemAvailability);
 export default menuRouter;
