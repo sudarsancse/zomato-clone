@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
 import Home from "./Pages/Home";
 import Login from "./Pages/Login";
 import PublicRoute from "./Components/PublicRoute";
@@ -29,7 +28,6 @@ function App() {
             <Route path="/account" element={<Account />} />
           </Route>
         </Routes>
-        <Toaster />
       </BrowserRouter>
     </>
   );

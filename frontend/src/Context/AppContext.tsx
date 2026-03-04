@@ -8,6 +8,7 @@ import {
 } from "react";
 import { authService_url } from "../main";
 import type { AppContextType, LocationData, User } from "../type";
+import { Toaster } from "react-hot-toast";
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
@@ -104,7 +105,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         loadingLocation,
       }}
     >
-      {children}{" "}
+      {children} <Toaster />
     </AppContext.Provider>
   );
 };

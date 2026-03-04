@@ -21,7 +21,7 @@ function RestaurantProfile({ restaurant, isSeller, onUpdate }: props) {
   const toggleOpenStatus = async () => {
     try {
       const { data } = await axios.put(
-        `${restaurant_Service_url}/api/resturant/status`,
+        `${restaurant_Service_url}/api/restaurant/status`,
         { status: !isOpen },
         {
           headers: {
@@ -42,7 +42,7 @@ function RestaurantProfile({ restaurant, isSeller, onUpdate }: props) {
     try {
       setLoading(true);
       const { data } = await axios.put(
-        `${restaurant_Service_url}/api/resturant/edit`,
+        `${restaurant_Service_url}/api/restaurant/edit`,
         { name, description },
         {
           headers: {
@@ -51,8 +51,9 @@ function RestaurantProfile({ restaurant, isSeller, onUpdate }: props) {
         },
       );
 
-      onUpdate(data.restaurant);
       toast.success(data.message);
+      onUpdate(data.restaurant);
+      setEditMode(false);
     } catch (error: any) {
       console.log(error);
       toast.error("Failed to Update");

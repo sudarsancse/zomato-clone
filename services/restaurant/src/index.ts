@@ -5,6 +5,7 @@ import dns from "node:dns/promises";
 import { Request, Response } from "express";
 import { connectDb } from "./config/db.js";
 import restaurantRoutes from "./routes/restaurant.js";
+import menuRouter from "./routes/menuItems.js";
 dotenv.config();
 
 // 🔥 Force Cloudflare DNS (fix for MongoDB SRV errors on Windows)
@@ -22,6 +23,7 @@ app.get("/", (req: Request, res: Response) => {
 
 //! ALL ROUTERS
 app.use("/api/restaurant", restaurantRoutes);
+app.use("/api/item", menuRouter);
 
 app.listen(PORT, () => {
   console.log(`Restaurant Server is running on port ${PORT}`);
