@@ -28,10 +28,6 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     try {
       const token = localStorage.getItem("token");
 
-      if (!token) {
-        setLoading(false);
-        return; // ⛔ stop here if no token
-      }
       const { data } = await axios.get(`${authService_url}/api/auth/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -65,9 +61,6 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         );
 
         const data = await res.json();
-
-        console.log(data);
-        console.log(typeof latitude);
 
         setLocation({
           latitude,

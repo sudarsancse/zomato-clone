@@ -46,7 +46,7 @@ type Role = (typeof allowedRoles)[number];
 
 export const addUserRole = TryCatch(async (req: AuthenticatedRequest, res) => {
   if (!req.user?._id) {
-    res.status(401).json({ message: "UnAuthorized" });
+    return res.status(401).json({ message: "UnAuthorized" });
   }
 
   const { role } = req.body as { role: Role };

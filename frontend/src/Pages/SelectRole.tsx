@@ -14,8 +14,6 @@ const SelectRole = () => {
   const roles: Role[] = ["customer", "rider", "seller"];
 
   const addRole = async () => {
-    console.log(localStorage.getItem("token"));
-
     try {
       const { data } = await axios.put(
         `${authService_url}/api/auth/add/role`,
