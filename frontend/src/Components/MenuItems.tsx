@@ -33,6 +33,23 @@ function MenuItems({ items, onItemDeleted, isSeller }: MenuItemsProps) {
       toast.error("faield to delete");
     }
   };
+
+  const toggleAvailiblity = async (itemId: string) => {
+    try {
+      const { data } = await axios.put(
+        `${restaurant_Service_url}/api/item/status/${itemId}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        },
+      );
+      toast.success(data.message);
+      onItemDeleted();
+    } catch (error) {
+      console.log(error);
+      toast.error("faield to update status");
+    }
+  };
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {items.map((item) => {
@@ -50,7 +67,7 @@ function MenuItems({ items, onItemDeleted, isSeller }: MenuItemsProps) {
                 src={item.image}
                 alt=""
                 className={`h-20 w-20 rounded object-cover ${
-                  item.isAvailable ? "grayscale brightness-75" : ""
+                  item.isAvailable ? "" : "grayscale brightness-75"
                 }`}
               />
               {!item.isAvailable && (
@@ -73,7 +90,7 @@ function MenuItems({ items, onItemDeleted, isSeller }: MenuItemsProps) {
                 <div className=" flex gap-2">
                   <button
                     className=" rounded-lg p-2 text-gray-600 hover:bg-gray-100"
-                    onClick={() => {}}
+                    onClick={() => toggleAvailiblity(item._id)}
                   >
                     {item.isAvailable ? (
                       <BsEye size={18} />
