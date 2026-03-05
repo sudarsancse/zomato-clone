@@ -14,7 +14,7 @@ function Navbar() {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (search) {
-        setSearchParams(search);
+        setSearchParams({ search });
       } else {
         setSearchParams({});
       }

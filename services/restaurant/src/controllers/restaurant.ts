@@ -4,6 +4,7 @@ import { AuthenticatedRequest } from "../middlewares/isAuth.js";
 import TryCatch from "../middlewares/tryCatch.js";
 import Restaurant from "../models/restaurant.js";
 import Jwt from "jsonwebtoken";
+import { serialize } from "node:v8";
 
 export const addRestaurant = TryCatch(
   async (req: AuthenticatedRequest, res) => {
@@ -165,3 +166,59 @@ export const updatRestaurant = TryCatch(
     });
   },
 );
+
+// fetch single restaurant with in 5km
+export const fetchSingleRestaurent = TryCatch(async (req, res) => {
+  const restaurant = await Restaurant.findById(req.params.id);
+
+  res.json({ success: true, restaurant });
+});
+
+// fetch all restaurant with in 5km
+export const getNearbyRestaurent = TryCatch(async (req, res) => {
+  const { latitude, longitude, radius = 5000, search = "" } = req.query;
+
+  if (!latitude || !longitude) {
+    return res
+      .status(400)
+      .json({ message: "Latitude and Longitude are required" });
+  }
+
+  const query: any = {
+    isVerified: true,
+  };
+
+  if (search && typeof search === "string") {
+    query.name = { $regex: search, $options: "i" };
+  }
+
+  const restaurants = await Restaurant.aggregate([
+    {
+      $geoNear: {
+        near: {
+          type: "Point",
+          coordinates: [Number(longitude), Number(latitude)],
+        },
+        distanceField: "distance",
+        maxDistance: Number(radius),
+        spherical: true,
+        query,
+      },
+    },
+    {
+      $sort: {
+        isOpen: -1,
+        distance: 1,
+      },
+    },
+    {
+      $addFields: {
+        distanceKm: {
+          $round: [{ $divide: ["$distance", 1000] }, 2],
+        },
+      },
+    },
+  ]);
+
+  res.json({ success: true, count: restaurants.length, restaurants });
+});
