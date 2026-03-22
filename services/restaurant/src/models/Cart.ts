@@ -5,7 +5,7 @@ export interface ICart extends Document {
   userId: mongoose.Types.ObjectId;
   restaurantId: mongoose.Types.ObjectId;
   itemId: mongoose.Types.ObjectId;
-  quauntity: number;
+  quantity: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -30,7 +30,7 @@ const schema = new Schema<ICart>(
       required: true,
       index: true,
     },
-    quauntity: {
+    quantity: {
       type: Number,
       default: 1,
       min: 1,

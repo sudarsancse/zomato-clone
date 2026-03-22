@@ -42,7 +42,7 @@ export const addToCart = TryCatch(async (req: AuthenticatedRequest, res) => {
       itemId,
     },
     {
-      $inc: { quauntity: 1 },
+      $inc: { quantity: 1 },
       $setOnInsert: { userId, restaurantId, itemId },
     },
     {
@@ -77,8 +77,8 @@ export const fetchMyCart = TryCatch(async (req: AuthenticatedRequest, res) => {
   for (const cartItem of cartItems) {
     const item: any = cartItem.itemId;
 
-    subTotal += item.price * cartItem.quauntity;
-    cartLength += cartItem.quauntity;
+    subTotal += item.price * cartItem.quantity;
+    cartLength += cartItem.quantity;
   }
 
   return res.json({
