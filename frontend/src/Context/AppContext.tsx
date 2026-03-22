@@ -133,6 +133,10 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         city,
         location,
         loadingLocation,
+        cart,
+        fetchCart,
+        quantity,
+        subTotal,
       }}
     >
       {children} <Toaster />

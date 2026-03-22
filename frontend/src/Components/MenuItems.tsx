@@ -7,6 +7,7 @@ import { VscLoading } from "react-icons/vsc";
 import axios from "axios";
 import { restaurant_Service_url } from "../main";
 import toast from "react-hot-toast";
+import { UseAppData } from "../Context/AppContext";
 
 interface MenuItemsProps {
   items: IMenuItem[];
@@ -48,6 +49,34 @@ function MenuItems({ items, onItemDeleted, isSeller }: MenuItemsProps) {
     } catch (error) {
       console.log(error);
       toast.error("faield to update status");
+    }
+  };
+
+  const { fetchCart } = UseAppData();
+
+  const addToCart = async (restaurantId: string, itemId: string) => {
+    try {
+      setLoadingItemId(itemId);
+
+      const { data } = await axios.post(
+        `${restaurant_Service_url}/api/cart/add`,
+        {
+          restaurantId,
+          itemId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
+      );
+
+      toast.success(data.message);
+      fetchCart();
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+    } finally {
+      setLoadingItemId(null);
     }
   };
   return (
@@ -110,7 +139,7 @@ function MenuItems({ items, onItemDeleted, isSeller }: MenuItemsProps) {
               {!isSeller && (
                 <button
                   disabled={!item.isAvailable || isLoading}
-                  onClick={() => {}}
+                  onClick={() => addToCart(item.restaurantId, item._id)}
                   className={`flex items-center justify-center rounded-lg p-2 ${!item.isAvailable || isLoading ? "cursor-not-allowed text-gray-400 " : "text-red-500 hover:bg-red-50"}`}
                 >
                   {isLoading ? (
