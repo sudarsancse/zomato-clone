@@ -9,6 +9,7 @@ import Account from "./Pages/Account";
 import { UseAppData } from "./Context/AppContext";
 import Restaurant from "./Pages/Restaurant";
 import RestaurantPage from "./Pages/RestaurantPage";
+import Cart from "./Pages/Cart";
 
 function App() {
   const { user } = UseAppData();
@@ -26,6 +27,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Home />} />
             <Route path="/restaurant/:id" element={<RestaurantPage />} />
+            <Route path="/cart" element={<Cart />} />
             <Route path="/select-role" element={<SelectRole />} />
             <Route path="/account" element={<Account />} />
           </Route>
